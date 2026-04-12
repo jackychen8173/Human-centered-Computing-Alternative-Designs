@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative Design - Transparent Rewards Calendar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: #1a1a1a; }
+        .phone-frame { width: 375px; height: 812px; background: #fafafa; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative; border: 8px solid #333; }
+        .status-bar { height: 44px; background: #f8f8f8; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; color: #1a1a1a; border-bottom: 2px solid #e0e0e0; }
+        .header { height: 60px; background: #ffffff; display: flex; align-items: center; padding: 0 16px; border-bottom: 2px solid #e0e0e0; }
+        .header-back { font-size: 20px; margin-right: 12px; cursor: pointer; color: #4A90E2; }
+        .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; flex: 1; color: #1a1a1a; }
+        .content { height: calc(812px - 104px); overflow-y: auto; padding: 20px 16px; background: #fafafa; }
+        .daily-progress { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 2px solid #e0e0e0; }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .progress-title { font-weight: 700; font-size: 15px; color: #1a1a1a; }
+        .progress-count { font-size: 13px; color: #4A90E2; font-weight: 600; }
+        .progress-bar-bg { background: #e0e0e0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+        .progress-bar-fill { background: linear-gradient(90deg, #4A90E2, #7ED321); height: 100%; transition: width 0.3s; }
+        .progress-info { font-size: 12px; color: #666; }
+        .cap-warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+        .cap-text { font-size: 12px; color: #856404; }
+        .rewards-calendar { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 2px solid #e0e0e0; }
+        .calendar-title { font-weight: 700; font-size: 15px; margin-bottom: 12px; color: #1a1a1a; }
+        .reward-item { display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; background: #f8f8f8; border-radius: 8px; }
+        .reward-item.completed { opacity: 0.6; }
+        .reward-item.next { border: 2px solid #4A90E2; background: #f0f7ff; }
+        .reward-number { width: 32px; height: 32px; border-radius: 50%; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #666; }
+        .reward-number.completed { background: #7ED321; color: white; }
+        .reward-number.next { background: #4A90E2; color: white; }
+        .reward-info { flex: 1; }
+        .reward-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+        .reward-requirement { font-size: 11px; color: #666; }
+        .reward-status { font-size: 11px; font-weight: 600; }
+        .reward-status.completed { color: #7ED321; }
+        .reward-status.next { color: #4A90E2; }
+        .reward-status.locked { color: #999; }
+        .explanation-box { background: #f0f7ff; border-left: 4px solid #4A90E2; padding: 14px; border-radius: 8px; margin-bottom: 16px; }
+        .explanation-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: #1a1a1a; }
+        .explanation-text { font-size: 12px; color: #555; line-height: 1.5; }
+        .navigation-hint { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 12px; color: #999; }
+        .nav-link { color: #4A90E2; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="header">
+            <div class="header-back" onclick="window.location.href='index.html'">←</div>
+            <div class="header-title">Rewards Calendar</div>
+        </div>
+        <div class="content">
+            <div class="daily-progress">
+                <div class="progress-header">
+                    <div class="progress-title">Today's Progress</div>
+                    <div class="progress-count">3 / 5 Rewards</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 60%"></div>
+                </div>
+                <div class="progress-info">2 more matches to reach daily cap</div>
+            </div>
+
+            <div class="cap-warning">
+                <div class="cap-text">⚠️ Daily reward cap: 5 rewards per day. After reaching the cap, rewards will use diminishing returns to prevent endless grinding.</div>
+            </div>
+
+            <div class="explanation-box">
+                <div class="explanation-title">📅 How It Works</div>
+                <div class="explanation-text">
+                    No random loot boxes. You know exactly when you'll get your next reward. Complete matches to progress through the calendar. Transparent and predictable.
+                </div>
+            </div>
+
+            <div class="rewards-calendar">
+                <div class="calendar-title">Reward Schedule</div>
+                
+                <div class="reward-item completed">
+                    <div class="reward-number completed">✓</div>
+                    <div class="reward-info">
+                        <div class="reward-name">100 Gold</div>
+                        <div class="reward-requirement">After 1 match</div>
+                    </div>
+                    <div class="reward-status completed">Claimed</div>
+                </div>
+
+                <div class="reward-item completed">
+                    <div class="reward-number completed">✓</div>
+                    <div class="reward-info">
+                        <div class="reward-name">Rare Weapon Skin</div>
+                        <div class="reward-requirement">After 2 matches</div>
+                    </div>
+                    <div class="reward-status completed">Claimed</div>
+                </div>
+
+                <div class="reward-item completed">
+                    <div class="reward-number completed">✓</div>
+                    <div class="reward-info">
+                        <div class="reward-name">200 Gold</div>
+                        <div class="reward-requirement">After 3 matches</div>
+                    </div>
+                    <div class="reward-status completed">Claimed</div>
+                </div>
+
+                <div class="reward-item next">
+                    <div class="reward-number next">4</div>
+                    <div class="reward-info">
+                        <div class="reward-name">Epic Chest</div>
+                        <div class="reward-requirement">After 4 matches</div>
+                    </div>
+                    <div class="reward-status next">Next (1 more match)</div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-number">5</div>
+                    <div class="reward-info">
+                        <div class="reward-name">500 Gold</div>
+                        <div class="reward-requirement">After 5 matches</div>
+                    </div>
+                    <div class="reward-status locked">Daily Cap</div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-number">6+</div>
+                    <div class="reward-info">
+                        <div class="reward-name">Diminishing Returns</div>
+                        <div class="reward-requirement">50 Gold per match</div>
+                    </div>
+                    <div class="reward-status locked">After cap</div>
+                </div>
+            </div>
+
+            <div class="explanation-box">
+                <div class="explanation-title">✓ No Gambling Mechanics</div>
+                <div class="explanation-text">
+                    Unlike random loot boxes (variable-ratio reinforcement), you see exactly what you'll earn and when. This removes the addictive uncertainty that keeps players grinding endlessly.
+                </div>
+            </div>
+        </div>
+        <div class="navigation-hint"><a href="index.html" class="nav-link">← Back to Home</a></div>
+    </div>
+</body>
+</html>

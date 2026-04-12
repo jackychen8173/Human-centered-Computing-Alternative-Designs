@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Design - Guild & Friends</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: #1a1a1a; }
+        .phone-frame { width: 375px; height: 812px; background: #ffffff; border-radius: 40px; border: 8px solid #333; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative; border: 8px solid #333; }
+        .status-bar { height: 44px; background: #f8f8f8; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; color: #1a1a1a; border-bottom: 1px solid #e0e0e0; }
+        .header { height: 60px; background: #ffffff; display: flex; align-items: center; padding: 0 16px; border-bottom: 2px solid #e0e0e0; }
+        .header-back { font-size: 20px; margin-right: 12px; cursor: pointer; color: #666; }
+        .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; flex: 1; color: #1a1a1a; }
+        .header-menu { font-size: 20px; cursor: pointer; color: #666; }
+        .content { height: calc(812px - 104px - 16px); overflow-y: auto; padding: 20px 16px; background: #fafafa; }
+        .urgent-banner { background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(255,68,68,0.3); animation: pulse 2s infinite; color: white; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 4px 12px rgba(255,68,68,0.3); } 50% { box-shadow: 0 6px 16px rgba(255,68,68,0.5); } }
+        .banner-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+        .banner-text { font-size: 14px; margin-bottom: 8px; line-height: 1.4; }
+        .banner-countdown { font-size: 24px; font-weight: 700; text-align: center; letter-spacing: 2px; font-family: 'Bebas Neue', sans-serif; }
+        .section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+        .online-dot { width: 12px; height: 12px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 8px #00ff00; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .guild-event-card { background: #fff; border: 2px solid #ff4444; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(255,68,68,0.2); }
+        .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .event-icon { font-size: 32px; }
+        .event-status { background: #ff4444; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .event-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; color: #1a1a1a; }
+        .event-info { font-size: 13px; color: #666; margin-bottom: 2px; }
+        .event-urgent { font-size: 12px; color: #ff4444; font-weight: 600; margin-top: 8px; }
+        .friend-item { background: #ffffff; border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; border: 2px solid #e0e0e0; transition: all 0.2s; }
+        .friend-item:hover { border-color: #ff4444; box-shadow: 0 2px 8px rgba(255,68,68,0.2); }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; position: relative; color: white; }
+        .online-badge { position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px; background: #00ff00; border: 2px solid #ffffff; border-radius: 50%; }
+        .friend-info { flex: 1; }
+        .friend-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; color: #1a1a1a; }
+        .friend-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #00cc00; font-weight: 600; }
+        .friend-activity { font-size: 11px; color: #999; margin-top: 2px; }
+        .join-btn { background: #ff4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
+        .join-btn:hover { background: #ff2222; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,68,68,0.4); }
+        .notification-popup { position: absolute; bottom: 100px; left: 16px; right: 16px; background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%); border-radius: 16px; padding: 20px; box-shadow: 0 8px 24px rgba(255,68,68,0.5); animation: slideUp 0.4s ease; z-index: 100; color: white; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .notification-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+        .notification-text { font-size: 14px; margin-bottom: 4px; line-height: 1.4; }
+        .notification-timer { font-size: 13px; opacity: 0.9; font-weight: 600; margin-bottom: 16px; }
+        .notification-buttons { display: flex; gap: 12px; }
+        .notif-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .notif-btn-primary { background: white; color: #ff4444; }
+        .notif-btn-primary:hover { background: #f0f0f0; }
+        .notif-btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .navigation-hint { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 12px; color: #999; }
+        .nav-link { color: #ff4444; text-decoration: none; font-weight: 600; }
+        .nav-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="header">
+            <div class="header-back">←</div>
+            <div class="header-title">Guild & Friends</div>
+            <div class="header-menu">⋮</div>
+        </div>
+        <div class="content">
+            <div class="urgent-banner">
+                <div class="banner-title">⚔️ GUILD RAID TONIGHT!</div>
+                <div class="banner-text">Dragon's Lair - Expert Mode<br>Be online at 8:00 PM or lose your raid spot!</div>
+                <div class="banner-countdown">STARTS IN 1:47:23</div>
+            </div>
+            <div class="guild-event-card">
+                <div class="event-header">
+                    <div class="event-icon">🏰</div>
+                    <div class="event-status">5/10 ONLINE</div>
+                </div>
+                <div class="event-title">Dungeon Run: Shadow Keep</div>
+                <div class="event-info">⏰ Starting in 12 minutes</div>
+                <div class="event-info">👥 Need: 1 Tank, 2 DPS, 2 Healers</div>
+                <div class="event-urgent">⚠️ Waiting for you! Everyone else is ready.</div>
+            </div>
+            <div class="section-header"><div class="online-dot"></div>ONLINE NOW (3)</div>
+            <div class="friend-item">
+                <div class="avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">SC<div class="online-badge"></div></div>
+                <div class="friend-info">
+                    <div class="friend-name">Sarah Chen</div>
+                    <div class="friend-status">ONLINE • In dungeon queue</div>
+                    <div class="friend-activity">Needs 1 more for party</div>
+                </div>
+                <button class="join-btn" onclick="window.location.href='screen2-current-lobby.html'">Join!</button>
+            </div>
+            <div class="friend-item">
+                <div class="avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">MT<div class="online-badge"></div></div>
+                <div class="friend-info">
+                    <div class="friend-name">Mike Torres</div>
+                    <div class="friend-status">ONLINE • Waiting in raid lobby</div>
+                    <div class="friend-activity">Dragon's Lair Expert</div>
+                </div>
+                <button class="join-btn" onclick="window.location.href='screen2-current-lobby.html'">Join!</button>
+            </div>
+            <div class="friend-item">
+                <div class="avatar" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">AK<div class="online-badge"></div></div>
+                <div class="friend-info">
+                    <div class="friend-name">Alex Kim</div>
+                    <div class="friend-status">ONLINE • Looking for group</div>
+                    <div class="friend-activity">Any activity</div>
+                </div>
+                <button class="join-btn" onclick="window.location.href='screen2-current-lobby.html'">Join!</button>
+            </div>
+        </div>
+        <div class="notification-popup">
+            <div class="notification-title">🔴 YOUR GUILD NEEDS YOU!</div>
+            <div class="notification-text">"We're starting the raid in 10 minutes. Join now or we'll have to replace you!"</div>
+            <div class="notification-timer">Last chance - 9:47 remaining</div>
+            <div class="notification-buttons">
+                <button class="notif-btn notif-btn-primary" onclick="window.location.href='screen2-current-lobby.html'">Join Raid!</button>
+                <button class="notif-btn notif-btn-secondary">Skip (Lose Spot)</button>
+            </div>
+        </div>
+        <div class="navigation-hint"><a href="screen4-alt-guild.html" class="nav-link">View Alternative Design →</a></div>
+    </div>
+</body>
+</html>

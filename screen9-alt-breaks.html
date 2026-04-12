@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative Design - Active Break System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: #1a1a1a; }
+        .phone-frame { width: 375px; height: 812px; background: #fafafa; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative; border: 8px solid #333; }
+        .status-bar { height: 44px; background: #f8f8f8; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; color: #1a1a1a; border-bottom: 2px solid #e0e0e0; }
+        .header { height: 60px; background: #ffffff; display: flex; align-items: center; padding: 0 16px; border-bottom: 2px solid #e0e0e0; }
+        .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; flex: 1; text-align: center; color: #1a1a1a; }
+        .content { height: calc(812px - 104px - 180px); overflow-y: auto; padding: 20px 16px; background: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .session-complete { text-align: center; margin-bottom: 24px; }
+        .complete-icon { font-size: 64px; margin-bottom: 16px; }
+        .complete-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 8px; color: #1a1a1a; }
+        .complete-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .session-stats { background: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #e0e0e0; width: 100%; max-width: 320px; }
+        .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { font-size: 13px; color: #666; }
+        .stat-value { font-size: 15px; font-weight: 700; color: #4A90E2; }
+        .time-warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 14px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 320px; }
+        .warning-text { font-size: 13px; color: #856404; line-height: 1.5; }
+        .break-suggestion { background: #f0f7ff; border-left: 4px solid #4A90E2; padding: 14px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 320px; }
+        .suggestion-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: #1a1a1a; }
+        .suggestion-text { font-size: 12px; color: #555; line-height: 1.5; }
+        .bottom-section { position: absolute; bottom: 0; left: 0; right: 0; background: #ffffff; padding: 20px 16px; border-top: 2px solid #e0e0e0; }
+        .button-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .action-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .break-btn { background: #7ED321; color: white; }
+        .break-btn:hover { background: #6bc219; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(126,211,33,0.3); }
+        .continue-btn { background: #4A90E2; color: white; }
+        .continue-btn:hover { background: #3a7fc2; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74,144,226,0.3); }
+        .auto-queue-note { text-align: center; font-size: 11px; color: #999; }
+        .navigation-hint { position: absolute; top: 50%; left: 16px; font-size: 12px; color: #999; }
+        .nav-link { color: #4A90E2; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="header">
+            <div class="header-title">Match Complete</div>
+        </div>
+        <div class="content">
+            <div class="session-complete">
+                <div class="complete-icon">✓</div>
+                <div class="complete-title">Great Match!</div>
+                <div class="complete-subtitle">Victory - Dragon's Lair</div>
+            </div>
+
+            <div class="session-stats">
+                <div class="stat-row">
+                    <div class="stat-label">Session Time:</div>
+                    <div class="stat-value">1h 47m</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Matches Played:</div>
+                    <div class="stat-value">4 matches</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">XP Earned:</div>
+                    <div class="stat-value">+2,450 XP</div>
+                </div>
+            </div>
+
+            <div class="time-warning">
+                <div class="warning-text">
+                    ⏰ You've been playing for nearly 2 hours. This is a good stopping point.
+                </div>
+            </div>
+
+            <div class="break-suggestion">
+                <div class="suggestion-title">💡 Consider Taking a Break</div>
+                <div class="suggestion-text">
+                    Studies show taking breaks improves focus and enjoyment. Your progress is saved—you can always continue later!
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="button-row">
+                <button class="action-btn break-btn" onclick="alert('Progress saved! See you next time.')">Take Break</button>
+                <button class="action-btn continue-btn">Continue Playing</button>
+            </div>
+            <div class="auto-queue-note">
+                ✓ No auto-queue - you decide when to play next
+            </div>
+        </div>
+
+        <div class="navigation-hint"><a href="index.html" class="nav-link">← Back</a></div>
+    </div>
+</body>
+</html>
