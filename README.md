@@ -1,4 +1,4 @@
-# Async Multiplayer Redesign
+# Alternative Designs
 
 Interactive HTML mockups demonstrating alternative designs for addictive gaming features.
 
